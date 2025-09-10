@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TasklyApplication<taskly>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.amaral.taskly.TasklyApplication",
+            "projectName": "taskly",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
