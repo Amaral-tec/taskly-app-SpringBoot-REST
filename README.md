@@ -29,7 +29,7 @@ The backend is built with **Java 17 + Spring Boot + PostgreSQL**, following a **
 ---
 
 ## 📂 Project Structure
-
+```
 taskly/
 ├── src/
 │ ├── main/
@@ -45,7 +45,7 @@ taskly/
 │ └── test/ # unit and integration tests
 ├── pom.xml
 └── README.md
-
+```
 
 ---
 
@@ -58,39 +58,40 @@ Create a PostgreSQL database locally or on AWS RDS:
 CREATE DATABASE taskly;
 CREATE USER taskly_user WITH ENCRYPTED PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE taskly TO taskly_user;
-
-
+```
 2. Environment Variables
 
 Set database credentials using environment variables:
 
 Linux / MacOS
-
+```
 export DB_USER=taskly_user
 export DB_PASSWORD=your_password
-
+```
 Windows (PowerShell)
-
+```
 setx DB_USER "taskly_user"
 setx DB_PASSWORD "your_password"
-
+```
 
 application.yml
-
+```
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/taskly
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-
+```
 ▶️ Running the Application
 1. Using Maven
+```
 ./mvnw spring-boot:run
-
+```
 2. Using JAR
+```
 mvn clean package
 java -jar target/taskly-0.0.1-SNAPSHOT.jar
-
+```
 
 The API will be available at:
 http://localhost:8088/taskly
@@ -115,41 +116,41 @@ curl -X GET http://localhost:8088/taskly/api/todos \
 
 
 POST create a task
-
+```
 curl -X POST http://localhost:8088/taskly/api/todos \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"title": "Buy groceries", "description": "Milk, eggs, bread", "priority": "HIGH"}'
-
+```
 
 PUT update a task
-
+```
 curl -X PUT http://localhost:8088/taskly/api/todos/1 \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"title": "Buy groceries and fruits", "completed": true}'
-
+```
 
 DELETE a task
-
+```
 curl -X DELETE http://localhost:8088/taskly/api/todos/1 \
   -H "Authorization: Bearer <token>"
-
+```
 Agenda (Events)
 
 GET all events
-
+```
 curl -X GET http://localhost:8088/taskly/api/agenda/events \
   -H "Authorization: Bearer <token>"
-
+```
 
 POST create an event
-
+```
 curl -X POST http://localhost:8088/taskly/api/agenda/events \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"title": "Team Meeting", "description": "Project sync-up", "dateTime": "2025-09-12T10:00:00"}'
-
+```
 📌 Next Steps
 
  Implement CRUD for To-Do module.
