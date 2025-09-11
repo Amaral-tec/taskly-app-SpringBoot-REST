@@ -28,6 +28,8 @@ public class UserService {
         user.setLogin(login);
         user.setPassword(passwordEncoder.encode(rawPassword));
         user.setPasswordCreatedAt(new java.util.Date());
+
+        //criar primeiro acesso
         return userRepository.save(user);
     }
 

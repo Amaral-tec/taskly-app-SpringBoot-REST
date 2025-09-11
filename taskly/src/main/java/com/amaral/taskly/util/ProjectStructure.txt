@@ -1,0 +1,40 @@
+taskly/
+├── src/
+│ ├── main/
+│ │ ├── java/com/taskly/ # Java source code
+│ │ │ ├── config/ # configuration classes
+│ │ │ ├── controller/ # REST controllers
+│ │ │ │		├─ AuthenticationController
+│ │ │ │		├─ AccessController
+│ │ │ ├── dto/ 
+│ │ │ │     ├─ request/
+│ │ │ │		    ├─ AccessRequestDTO
+│ │ │ │     ├─ response/ 
+│ │ │ │		    ├─ AccessResponseDTO
+│ │ │ ├── event/
+│ │ │ │    └── ErrorEvent -----------------> extends ApplicationEvent
+│ │ │ ├── listener/
+│ │ │ │    └── ErrorEventListener.java
+│ │ │ ├── model/ # JPA entities
+│ │ │ │		├─ Access ---------------------> implements GrantedAuthority
+│ │ │ │		├─ User -----------------------> implements UserDetails
+│ │ │ │		├─ UserProfile
+│ │ │ ├── repository/ ---------------------> extends JpaRepository
+│ │ │ │		├─ AccessRepository
+│ │ │ │		├─ UserRepository
+│ │ │ │		├─ UserProfileRepository
+│ │ │ ├── security
+│ │ │ │		├─ JwtAuthenticationFilter ----> extends OncePerRequestFilter
+│ │ │ │		├─ JwtUtils
+│ │ │ │		├─ SecurityConfig
+│ │ │ ├── service
+│ │ │ │		├─ AccessService
+│ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
+│ │ │ │		├─ ServiceSendEmail
+│ │ │ │		├─ UserService
+│ │ └── resources/
+│ │ ├── application.yml # environment configs
+│ │ └── db/migration/ # Flyway scripts
+│ └── test/ # unit and integration tests
+├── pom.xml
+└── README.md	
