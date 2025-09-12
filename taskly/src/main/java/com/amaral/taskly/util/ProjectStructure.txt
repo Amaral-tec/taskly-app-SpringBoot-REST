@@ -2,19 +2,22 @@ taskly/
 ├── src/
 │ ├── main/
 │ │ ├── java/com/taskly/ # Java source code
-│ │ │ ├── config/ # configuration classes
+│ │ │ ├── constant/
+│ │ │ │		├─ ResponseMessages
 │ │ │ ├── controller/ # REST controllers
-│ │ │ │		├─ AuthenticationController
 │ │ │ │		├─ AccessController
+│ │ │ │		├─ AuthenticationController
+│ │ │ │		├─ UserController
 │ │ │ ├── dto/ 
 │ │ │ │     ├─ request/
 │ │ │ │		    ├─ AccessRequestDTO
 │ │ │ │     ├─ response/ 
 │ │ │ │		    ├─ AccessResponseDTO
+│ │ │ │		    ├─ ErrorObjectResponseDTO
 │ │ │ ├── event/
 │ │ │ │    └── ErrorEvent -----------------> extends ApplicationEvent
 │ │ │ ├── listener/
-│ │ │ │    └── ErrorEventListener.java
+│ │ │ │    └── ErrorEventListener
 │ │ │ ├── model/ # JPA entities
 │ │ │ │		├─ Access ---------------------> implements GrantedAuthority
 │ │ │ │		├─ User -----------------------> implements UserDetails
@@ -30,7 +33,7 @@ taskly/
 │ │ │ ├── service
 │ │ │ │		├─ AccessService
 │ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
-│ │ │ │		├─ ServiceSendEmail
+│ │ │ │		├─ EmailService
 │ │ │ │		├─ UserService
 │ │ └── resources/
 │ │ ├── application.yml # environment configs

@@ -1,6 +1,7 @@
 package com.amaral.taskly.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,9 @@ public class AccessController {
         return ResponseEntity.status(201).body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AccessResponseDTO> getAccess(@PathVariable Long id) {
-        AccessResponseDTO response = accessService.getAccess(id);
+    @GetMapping("/{publicId}")
+    public ResponseEntity<AccessResponseDTO> getAccess(@PathVariable UUID publicId) {
+        AccessResponseDTO response = accessService.getAccess(publicId);
         return ResponseEntity.ok(response);
     }
 
@@ -51,15 +52,15 @@ public class AccessController {
         return ResponseEntity.ok(accessService.findAccessByName(name));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AccessResponseDTO> updateAccess(@PathVariable Long id,
+    @PutMapping("/{publicId}")
+    public ResponseEntity<AccessResponseDTO> updateAccess(@PathVariable UUID publicId,
                                                           @RequestBody @Valid AccessRequestDTO dto) {
-        return ResponseEntity.ok(accessService.updateAccess(id, dto));
+        return ResponseEntity.ok(accessService.updateAccess(publicId, dto));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccessById(@PathVariable Long id) {
-        accessService.deleteAccess(id);
+    @DeleteMapping("/{publicId}")
+    public ResponseEntity<Void> deleteAccessById(@PathVariable UUID publicId) {
+        accessService.deleteAccess(publicId);
         return ResponseEntity.noContent().build();
     }
 }

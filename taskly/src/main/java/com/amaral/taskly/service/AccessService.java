@@ -1,6 +1,7 @@
 package com.amaral.taskly.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,14 +37,14 @@ public class AccessService {
         entity.setName(dto.name());
         accessRepository.save(entity);
 
-        log.info("Record successfully created, id={}", entity.getId());
-        return new AccessResponseDTO(entity.getId(), entity.getName());
+        log.info("Record successfully created, id={}", entity.getPublicId());
+        return new AccessResponseDTO(entity.getPublicId(), entity.getName());
     }
 
-    public AccessResponseDTO getAccess(Long id) {
-        Access entity = findByIdOrThrow(id);
-        log.info("Record retrieved: id={}", id);
-        return new AccessResponseDTO(entity.getId(), entity.getName());
+    public AccessResponseDTO getAccess(UUID publicId) {
+        Access entity = findByIdOrThrow(publicId);
+        log.info("Record retrieved: id={}", publicId);
+        return new AccessResponseDTO(entity.getPublicId(), entity.getName());
     }
 
     public List<AccessResponseDTO> findAllAccess() {
@@ -51,7 +52,7 @@ public class AccessService {
         log.info("Retrieving all records, total={}", list.size());
 
         return list.stream()
-                   .map(a -> new AccessResponseDTO(a.getId(), a.getName()))
+                   .map(a -> new AccessResponseDTO(a.getPublicId(), a.getName()))
                    .toList();
     }
 
@@ -60,15 +61,15 @@ public class AccessService {
         log.info("Searching records by name={}, found={}", name, list.size());
 
         return list.stream()
-                   .map(a -> new AccessResponseDTO(a.getId(), a.getName()))
+                   .map(a -> new AccessResponseDTO(a.getPublicId(), a.getName()))
                    .toList();
     }
 
-    public AccessResponseDTO updateAccess(Long id, AccessRequestDTO dto) {
-        Access entity = findByIdOrThrow(id);
+    public AccessResponseDTO updateAccess(UUID publicId, AccessRequestDTO dto) {
+        Access entity = findByIdOrThrow(publicId);
 
         accessRepository.findByName(dto.name()).stream()
-                .filter(a -> !a.getId().equals(id))
+                .filter(a -> !a.getPublicId().equals(publicId))
                 .findFirst()
                 .ifPresent(a -> {
                     throw new BusinessException("Already registered with the name: " + dto.name());
@@ -77,20 +78,20 @@ public class AccessService {
         entity.setName(dto.name());
         accessRepository.save(entity);
 
-        log.info("Record successfully updated, id={}", entity.getId());
-        return new AccessResponseDTO(entity.getId(), entity.getName());
+        log.info("Record successfully updated, id={}", entity.getPublicId());
+        return new AccessResponseDTO(entity.getPublicId(), entity.getName());
     }
 
-    public void deleteAccess(Long id) {
-        Access entity = findByIdOrThrow(id);
+    public void deleteAccess(UUID publicId) {
+        Access entity = findByIdOrThrow(publicId);
         entity.setDeleted(true);
         accessRepository.save(entity);
-        log.info("Record successfully deleted, id={}", entity.getId());
+        log.info("Record successfully deleted, id={}", entity.getPublicId());
     }
 
-    private Access findByIdOrThrow(Long id) {
-        return accessRepository.findById(id)
+    public Access findByIdOrThrow(UUID publicId) {
+        return accessRepository.findByPublicId(publicId)
                 .filter(a -> !a.getDeleted())
-                .orElseThrow(() -> new BusinessException("ID not found or deleted: " + id));
+                .orElseThrow(() -> new BusinessException("ID not found or deleted: " + publicId));
     }
 }

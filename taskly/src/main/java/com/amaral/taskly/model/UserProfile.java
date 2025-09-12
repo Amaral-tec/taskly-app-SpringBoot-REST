@@ -2,6 +2,7 @@ package com.amaral.taskly.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -40,6 +41,9 @@ public class UserProfile implements Serializable {
 
     @Id
     private Long id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private UUID publicId = UUID.randomUUID();
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

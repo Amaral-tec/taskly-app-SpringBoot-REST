@@ -1,10 +1,15 @@
 package com.amaral.taskly.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.amaral.taskly.BusinessException;
+import com.amaral.taskly.dto.request.AccessRequestDTO;
+import com.amaral.taskly.dto.response.AccessResponseDTO;
+import com.amaral.taskly.model.Access;
 import com.amaral.taskly.model.User;
 import com.amaral.taskly.repository.UserRepository;
 
@@ -12,25 +17,34 @@ import com.amaral.taskly.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AccessService accessService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repo, PasswordEncoder encoder) {
+    public UserService(UserRepository repo, AccessService accessService, PasswordEncoder encoder) {
         this.userRepository = repo;
+        this.accessService = accessService;
         this.passwordEncoder = encoder;
+    }
+
+    public void assignAccess(UUID userPublicId, UUID accessPublicId) {
+        Access access = accessService.findByIdOrThrow(accessPublicId);
+        User user = findByIdOrThrow(userPublicId);
+        userRepository.insertUserAccess(user.getId(), access.getId());
     }
     
     public User register(String login, String rawPassword) {
         if (userRepository.findByLogin(login).isPresent()) {
-            throw new RuntimeException("Login já existe");
+            throw new RuntimeException("Login already exists");
         }
 
         User user = new User();
         user.setLogin(login);
         user.setPassword(passwordEncoder.encode(rawPassword));
         user.setPasswordCreatedAt(new java.util.Date());
+        user = userRepository.save(user);
+        assignDefaultRole(user.getPublicId());
 
-        //criar primeiro acesso
-        return userRepository.save(user);
+        return user;
     }
 
     public Optional<User> findByLogin(String login) {
@@ -39,5 +53,21 @@ public class UserService {
 
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    private User findByIdOrThrow(UUID userPublicId) {
+        return userRepository.findByPublicId(userPublicId)
+                .filter(a -> !a.getDeleted())
+                .orElseThrow(() -> new BusinessException("ID not found or deleted: " + userPublicId));
+    }
+
+    private void assignDefaultRole(UUID userPublicId) {
+        AccessResponseDTO dto = accessService
+            .findAccessByName("ROLE_USER")
+            .stream()
+            .findFirst()
+            .orElseGet(() -> accessService.createAccess(new AccessRequestDTO("ROLE_USER")));
+
+        assignAccess(userPublicId, dto.publicId());
     }
 }

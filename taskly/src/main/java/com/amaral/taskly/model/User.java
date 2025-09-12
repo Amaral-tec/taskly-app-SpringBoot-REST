@@ -3,6 +3,7 @@ package com.amaral.taskly.model;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -48,6 +50,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
     private Long id;
 
+    @Column(nullable = false, unique = true, updatable = false)
+    private UUID publicId = UUID.randomUUID();
+
     @NotBlank
     @Column(nullable = false, unique = true)
     private String login;
@@ -72,20 +77,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Boolean deleted = Boolean.FALSE;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_accesses",
         uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "access_id" }, name = "unique_access_user"),
-        joinColumns = @JoinColumn(
-            name = "user_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)
-        ),
-        inverseJoinColumns = @JoinColumn(
-            name = "access_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "access_fk", value = ConstraintMode.CONSTRAINT)
-        )
+        joinColumns = @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_fk")),
+        inverseJoinColumns = @JoinColumn(name = "access_id", foreignKey = @ForeignKey(name = "access_fk"))
     )
     private List<Access> accesses;
 

@@ -1,6 +1,7 @@
 package com.amaral.taskly.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.hibernate.annotations.Filter;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +36,9 @@ public class Access implements GrantedAuthority {
     @Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_access")
 	private Long id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private UUID publicId = UUID.randomUUID();
 
 	@NotBlank
 	@Column(nullable = false, unique = true)
