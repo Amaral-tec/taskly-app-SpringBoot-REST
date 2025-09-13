@@ -111,6 +111,7 @@ public class AgendaService {
         agenda.setDescription(dto.description());
         agenda.setStartDateTime(dto.startDateTime());
         agenda.setEndDateTime(dto.endDateTime());
+        agenda.setReminder(dto.endDateTime());
         agenda.setRecurrenceType(dto.recurrenceType() != null ? dto.recurrenceType() : RecurrenceType.NONE);
         agenda.setStatus(dto.status() != null ? dto.status() : AgendaStatus.SCHEDULED);
 
