@@ -1,6 +1,6 @@
 package com.amaral.taskly.service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,15 +40,21 @@ public class UserService {
         User user = new User();
         user.setLogin(login);
         user.setPassword(passwordEncoder.encode(rawPassword));
-        user.setPasswordCreatedAt(new java.util.Date());
+        user.setPasswordCreatedAt(LocalDateTime.now());
         user = userRepository.save(user);
         assignDefaultRole(user.getPublicId());
-
         return user;
     }
 
-    public Optional<User> findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public void changePassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPasswordCreatedAt(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new BusinessException("User not found: " + login));
     }
 
     public User save(User user) {

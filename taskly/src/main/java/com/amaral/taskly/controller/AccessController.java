@@ -19,16 +19,14 @@ import com.amaral.taskly.dto.response.AccessResponseDTO;
 import com.amaral.taskly.service.AccessService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/access")
+@RequiredArgsConstructor
 public class AccessController {
 
     private final AccessService accessService;
-
-    public AccessController(AccessService accessService) {
-        this.accessService = accessService;
-    }
 
     @PostMapping
     public ResponseEntity<AccessResponseDTO> createAccess(@RequestBody @Valid AccessRequestDTO dto) {

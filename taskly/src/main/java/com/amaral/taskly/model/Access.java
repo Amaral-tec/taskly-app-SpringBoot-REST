@@ -1,9 +1,11 @@
 package com.amaral.taskly.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
@@ -13,8 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Filter(name = "deletedFilter", condition = "deleted = :isDeleted")
+@SQLRestriction("deleted = false")
 @Table(name = "accesses")
 @SequenceGenerator(name = "seq_access", sequenceName = "seq_access", initialValue = 1, allocationSize = 1)
 public class Access implements GrantedAuthority {
@@ -44,9 +44,13 @@ public class Access implements GrantedAuthority {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-    @Temporal(TemporalType.DATE)
-	@Column(name = "created_at")
-	private Date createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 	
     @Column(nullable = false)
 	private Boolean deleted = Boolean.FALSE;

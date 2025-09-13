@@ -4,26 +4,36 @@ taskly/
 │ │ ├── java/com/taskly/ # Java source code
 │ │ │ ├── constant/
 │ │ │ │		├─ ResponseMessages
+│ │ │ ├── enums/
+│ │ │ │     ├─ AgendaStatus
+│ │ │ │     ├─ RecurrenceType
 │ │ │ ├── controller/ # REST controllers
 │ │ │ │		├─ AccessController
+│ │ │ │		├─ AgendaController
 │ │ │ │		├─ AuthenticationController
 │ │ │ │		├─ UserController
 │ │ │ ├── dto/ 
 │ │ │ │     ├─ request/
 │ │ │ │		    ├─ AccessRequestDTO
+│ │ │ │		    ├─ AgendaRequestDTO
+│ │ │ │		    ├─ AgendaSearchRequestDTO
 │ │ │ │     ├─ response/ 
 │ │ │ │		    ├─ AccessResponseDTO
+│ │ │ │		    ├─ AgendaResponseDTO
 │ │ │ │		    ├─ ErrorObjectResponseDTO
 │ │ │ ├── event/
 │ │ │ │    └── ErrorEvent -----------------> extends ApplicationEvent
 │ │ │ ├── listener/
 │ │ │ │    └── ErrorEventListener
+│ │ │ ├── mapper/
 │ │ │ ├── model/ # JPA entities
 │ │ │ │		├─ Access ---------------------> implements GrantedAuthority
+│ │ │ │		├─ Agenda
 │ │ │ │		├─ User -----------------------> implements UserDetails
 │ │ │ │		├─ UserProfile
 │ │ │ ├── repository/ ---------------------> extends JpaRepository
 │ │ │ │		├─ AccessRepository
+│ │ │ │		├─ AgendaRepository
 │ │ │ │		├─ UserRepository
 │ │ │ │		├─ UserProfileRepository
 │ │ │ ├── security
@@ -32,6 +42,7 @@ taskly/
 │ │ │ │		├─ SecurityConfig
 │ │ │ ├── service
 │ │ │ │		├─ AccessService
+│ │ │ │		├─ AgendaService
 │ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
 │ │ │ │		├─ EmailService
 │ │ │ │		├─ UserService
