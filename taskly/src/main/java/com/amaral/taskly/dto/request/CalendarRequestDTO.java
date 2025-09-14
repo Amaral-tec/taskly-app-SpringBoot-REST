@@ -2,14 +2,14 @@ package com.amaral.taskly.dto.request;
 
 import java.time.LocalDateTime;
 
-import com.amaral.taskly.enums.AgendaStatus;
+import com.amaral.taskly.enums.CalendarStatus;
 import com.amaral.taskly.enums.RecurrenceType;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record AgendaRequestDTO(
+public record CalendarRequestDTO(
 
     @NotBlank(message = "Title is required")
     String title,
@@ -29,7 +29,7 @@ public record AgendaRequestDTO(
     @NotNull(message = "Recurrence type is required")
     RecurrenceType recurrenceType,
 
-    AgendaStatus status,
+    CalendarStatus status,
 
     Long userId
 ) {}

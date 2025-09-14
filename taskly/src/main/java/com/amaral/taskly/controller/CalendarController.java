@@ -16,88 +16,88 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amaral.taskly.dto.request.AgendaRequestDTO;
-import com.amaral.taskly.dto.request.AgendaSearchRequestDTO;
-import com.amaral.taskly.dto.response.AgendaResponseDTO;
+import com.amaral.taskly.dto.request.CalendarRequestDTO;
+import com.amaral.taskly.dto.request.CalendarSearchRequestDTO;
+import com.amaral.taskly.dto.response.CalendarResponseDTO;
 import com.amaral.taskly.model.User;
-import com.amaral.taskly.service.AgendaService;
+import com.amaral.taskly.service.CalendarService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/agendas")
+@RequestMapping("/api/calendar")
 @RequiredArgsConstructor
-public class AgendaController {
+public class CalendarController {
 
-    private final AgendaService agendaService;  
+    private final CalendarService calendarService;  
 
     @PostMapping
-    public ResponseEntity<AgendaResponseDTO> createAgenda(
-            @RequestBody @Valid AgendaRequestDTO dto,
+    public ResponseEntity<CalendarResponseDTO> createCalendar(
+            @RequestBody @Valid CalendarRequestDTO dto,
             @AuthenticationPrincipal User currentUser) {
 
-        AgendaResponseDTO response = agendaService.createAgenda(dto, currentUser);
+        CalendarResponseDTO response = calendarService.createCalendar(dto, currentUser);
         return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/{publicId}")
-    public ResponseEntity<AgendaResponseDTO> getAgenda(@PathVariable UUID publicId) {
-        return ResponseEntity.ok(agendaService.getAgenda(publicId));
+    public ResponseEntity<CalendarResponseDTO> getCalendar(@PathVariable UUID publicId) {
+        return ResponseEntity.ok(calendarService.getCalendar(publicId));
     }
 
     @GetMapping
-    public ResponseEntity<List<AgendaResponseDTO>> listAgendas(@AuthenticationPrincipal User currentUser) {
-        return ResponseEntity.ok(agendaService.listAgendas(currentUser));
+    public ResponseEntity<List<CalendarResponseDTO>> listCalendars(@AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(calendarService.listCalendars(currentUser));
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<AgendaResponseDTO>> searchAgendas(
-            @RequestBody AgendaSearchRequestDTO filters,
+    public ResponseEntity<List<CalendarResponseDTO>> searchCalendars(
+            @RequestBody CalendarSearchRequestDTO filters,
             @AuthenticationPrincipal User currentUser) {
 
-        List<AgendaResponseDTO> agendas = agendaService.searchAgendas(
+        List<CalendarResponseDTO> calendars = calendarService.searchCalendars(
             filters.title(),
             filters.status(),
             filters.startDate(),
             filters.endDate(),
             currentUser
         );
-        return ResponseEntity.ok(agendas);
+        return ResponseEntity.ok(calendars);
     }
 
     @PutMapping("/{publicId}")
-    public ResponseEntity<AgendaResponseDTO> updateAgenda(
+    public ResponseEntity<CalendarResponseDTO> updateCalendar(
             @PathVariable UUID publicId,
-            @RequestBody @Valid AgendaRequestDTO dto,
+            @RequestBody @Valid CalendarRequestDTO dto,
             @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(agendaService.updateAgenda(publicId, dto, currentUser));
+        return ResponseEntity.ok(calendarService.updateCalendar(publicId, dto, currentUser));
     }
 
     @DeleteMapping("/{publicId}")
-    public ResponseEntity<Void> deleteAgenda(
+    public ResponseEntity<Void> deleteCalendar(
             @PathVariable UUID publicId,
             @AuthenticationPrincipal User currentUser) {
 
-        agendaService.deleteAgenda(publicId, currentUser);
+        calendarService.deleteCalendar(publicId, currentUser);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{publicId}/complete")
-    public ResponseEntity<AgendaResponseDTO> completeAgenda(
+    public ResponseEntity<CalendarResponseDTO> completeCalendar(
             @PathVariable UUID publicId,
             @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(agendaService.markAsCompleted(publicId, currentUser));
+        return ResponseEntity.ok(calendarService.markAsCompleted(publicId, currentUser));
     }
 
     @PostMapping("/{publicId}/reminder")
-    public ResponseEntity<AgendaResponseDTO> setReminder(
+    public ResponseEntity<CalendarResponseDTO> setReminder(
             @PathVariable UUID publicId,
             @RequestParam LocalDateTime reminder,
             @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(agendaService.setReminder(publicId, reminder, currentUser));
+        return ResponseEntity.ok(calendarService.setReminder(publicId, reminder, currentUser));
     }
 }

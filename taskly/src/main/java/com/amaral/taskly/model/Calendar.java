@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.amaral.taskly.enums.AgendaStatus;
+import com.amaral.taskly.enums.CalendarStatus;
 import com.amaral.taskly.enums.RecurrenceType;
 
 import jakarta.persistence.Column;
@@ -43,7 +43,7 @@ import lombok.Setter;
 @SQLRestriction("deleted = false")
 @Table(name = "agendas")
 @SequenceGenerator(name = "seq_agenda", sequenceName = "seq_agenda", initialValue = 1, allocationSize = 1)
-public class Agenda implements Serializable {
+public class Calendar implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -102,7 +102,7 @@ public class Agenda implements Serializable {
 
     @NotNull(message = "Status is required")
     @Enumerated(EnumType.STRING)
-    private AgendaStatus status = AgendaStatus.SCHEDULED;
+    private CalendarStatus status = CalendarStatus.SCHEDULED;
 
     @NotNull(message = "User is required")
     @ManyToOne(fetch = FetchType.LAZY)

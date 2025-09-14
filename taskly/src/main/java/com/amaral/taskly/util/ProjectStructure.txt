@@ -5,21 +5,21 @@ taskly/
 │ │ │ ├── constant/
 │ │ │ │		├─ ResponseMessages
 │ │ │ ├── enums/
-│ │ │ │     ├─ AgendaStatus
+│ │ │ │     ├─ CalendarStatus
 │ │ │ │     ├─ RecurrenceType
 │ │ │ ├── controller/ # REST controllers
 │ │ │ │		├─ AccessController
-│ │ │ │		├─ AgendaController
 │ │ │ │		├─ AuthenticationController
+│ │ │ │		├─ CalendarController
 │ │ │ │		├─ UserController
 │ │ │ ├── dto/ 
 │ │ │ │     ├─ request/
 │ │ │ │		    ├─ AccessRequestDTO
-│ │ │ │		    ├─ AgendaRequestDTO
-│ │ │ │		    ├─ AgendaSearchRequestDTO
+│ │ │ │		    ├─ CalendarRequestDTO
+│ │ │ │		    ├─ CalendarSearchRequestDTO
 │ │ │ │     ├─ response/ 
 │ │ │ │		    ├─ AccessResponseDTO
-│ │ │ │		    ├─ AgendaResponseDTO
+│ │ │ │		    ├─ CalendarResponseDTO
 │ │ │ │		    ├─ ErrorObjectResponseDTO
 │ │ │ ├── event/
 │ │ │ │    └── ErrorEvent -----------------> extends ApplicationEvent
@@ -28,12 +28,12 @@ taskly/
 │ │ │ ├── mapper/
 │ │ │ ├── model/ # JPA entities
 │ │ │ │		├─ Access ---------------------> implements GrantedAuthority
-│ │ │ │		├─ Agenda
+│ │ │ │		├─ Calendar
 │ │ │ │		├─ User -----------------------> implements UserDetails
 │ │ │ │		├─ UserProfile
 │ │ │ ├── repository/ ---------------------> extends JpaRepository
 │ │ │ │		├─ AccessRepository
-│ │ │ │		├─ AgendaRepository
+│ │ │ │		├─ CalendarRepository
 │ │ │ │		├─ UserRepository
 │ │ │ │		├─ UserProfileRepository
 │ │ │ ├── security
@@ -42,7 +42,7 @@ taskly/
 │ │ │ │		├─ SecurityConfig
 │ │ │ ├── service
 │ │ │ │		├─ AccessService
-│ │ │ │		├─ AgendaService
+│ │ │ │		├─ CalendarService
 │ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
 │ │ │ │		├─ EmailService
 │ │ │ │		├─ UserService

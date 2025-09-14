@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.amaral.taskly.enums.RecurrenceType;
-import com.amaral.taskly.enums.AgendaStatus;
+import com.amaral.taskly.enums.CalendarStatus;
 
-public record AgendaResponseDTO(
+public record CalendarResponseDTO(
     Long id,
     UUID publicId,
     String title,
@@ -15,7 +15,7 @@ public record AgendaResponseDTO(
     LocalDateTime endDateTime,
     LocalDateTime reminder,
     RecurrenceType recurrenceType,
-    AgendaStatus status,
+    CalendarStatus status,
     Long userId,
     LocalDateTime createdAt,
     LocalDateTime updatedAt

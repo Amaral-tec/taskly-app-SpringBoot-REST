@@ -1,6 +1,6 @@
 package com.amaral.taskly.enums;
 
-public enum AgendaStatus {
+public enum CalendarStatus {
     SCHEDULED, 
     CONFIRMED, 
     COMPLETED, 

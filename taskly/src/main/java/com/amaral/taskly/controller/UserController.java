@@ -13,7 +13,7 @@ import com.amaral.taskly.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/user")
 @RequiredArgsConstructor
 public class UserController {
 
