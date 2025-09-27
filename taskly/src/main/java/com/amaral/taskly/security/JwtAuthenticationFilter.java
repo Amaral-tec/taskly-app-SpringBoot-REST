@@ -53,6 +53,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
+        System.out.println("Auth Header: " + authHeader);
+        System.out.println("Username from JWT: " + username);
+        System.out.println("Authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
+
         filterChain.doFilter(request, response);
     }
 

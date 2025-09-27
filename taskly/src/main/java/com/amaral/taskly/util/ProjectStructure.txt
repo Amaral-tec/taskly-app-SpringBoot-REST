@@ -3,50 +3,50 @@ taskly/
 │ ├── main/
 │ │ ├── java/com/taskly/ # Java source code
 │ │ │ ├── constant/
-│ │ │ │		├─ ResponseMessages
+│ │ │ │		└─ ResponseMessages
 │ │ │ ├── enums/
 │ │ │ │     ├─ CalendarStatus
-│ │ │ │     ├─ RecurrenceType
+│ │ │ │     └─ RecurrenceType
 │ │ │ ├── controller/ # REST controllers
 │ │ │ │		├─ AccessController
 │ │ │ │		├─ AuthenticationController
 │ │ │ │		├─ CalendarController
-│ │ │ │		├─ UserController
+│ │ │ │		└─ UserController
 │ │ │ ├── dto/ 
 │ │ │ │     ├─ request/
-│ │ │ │		    ├─ AccessRequestDTO
-│ │ │ │		    ├─ CalendarRequestDTO
-│ │ │ │		    ├─ CalendarSearchRequestDTO
-│ │ │ │     ├─ response/ 
+│ │ │ │		│   ├─ AccessRequestDTO
+│ │ │ │		│   ├─ CalendarRequestDTO
+│ │ │ │		│   ├─ CalendarSearchRequestDTO
+│ │ │ │     └─ response/ 
 │ │ │ │		    ├─ AccessResponseDTO
 │ │ │ │		    ├─ CalendarResponseDTO
-│ │ │ │		    ├─ ErrorObjectResponseDTO
+│ │ │ │		    └─ ErrorObjectResponseDTO
 │ │ │ ├── event/
-│ │ │ │    └── ErrorEvent -----------------> extends ApplicationEvent
+│ │ │ │    └─ ErrorEvent -----------------> extends ApplicationEvent
 │ │ │ ├── listener/
-│ │ │ │    └── ErrorEventListener
+│ │ │ │    └─ ErrorEventListener
 │ │ │ ├── mapper/
 │ │ │ ├── model/ # JPA entities
 │ │ │ │		├─ Access ---------------------> implements GrantedAuthority
 │ │ │ │		├─ Calendar
 │ │ │ │		├─ User -----------------------> implements UserDetails
-│ │ │ │		├─ UserProfile
+│ │ │ │		└─ UserProfile
 │ │ │ ├── repository/ ---------------------> extends JpaRepository
 │ │ │ │		├─ AccessRepository
 │ │ │ │		├─ CalendarRepository
 │ │ │ │		├─ UserRepository
-│ │ │ │		├─ UserProfileRepository
+│ │ │ │		└─ UserProfileRepository
 │ │ │ ├── security
 │ │ │ │		├─ JwtAuthenticationFilter ----> extends OncePerRequestFilter
 │ │ │ │		├─ JwtUtils
-│ │ │ │		├─ SecurityConfig
-│ │ │ ├── service
-│ │ │ │		├─ AccessService
-│ │ │ │		├─ CalendarService
-│ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
-│ │ │ │		├─ EmailService
-│ │ │ │		├─ UserService
-│ │ └── resources/
+│ │ │ │		└─ SecurityConfig
+│ │ │ └── service
+│ │ │ 		├─ AccessService
+│ │ │ 		├─ CalendarService
+│ │ │ 		├─ CustomUserDetailsService ---> implements UserDetailsService
+│ │ │ 		├─ EmailService
+│ │ │ 		└─ UserService
+│ │ ├── resources/
 │ │ ├── application.yml # environment configs
 │ │ └── db/migration/ # Flyway scripts
 │ └── test/ # unit and integration tests
