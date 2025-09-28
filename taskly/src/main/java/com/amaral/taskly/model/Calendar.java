@@ -41,14 +41,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @SQLRestriction("deleted = false")
-@Table(name = "agendas")
-@SequenceGenerator(name = "seq_agenda", sequenceName = "seq_agenda", initialValue = 1, allocationSize = 1)
+@Table(name = "calendars")
+@SequenceGenerator(name = "seq_calendar", sequenceName = "seq_calendar", initialValue = 1, allocationSize = 1)
 public class Calendar implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_agenda")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_calendar")
     private Long id;
 
     @Column(nullable = false, unique = true, updatable = false)

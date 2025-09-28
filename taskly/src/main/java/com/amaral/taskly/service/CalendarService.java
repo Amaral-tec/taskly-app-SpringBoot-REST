@@ -132,16 +132,16 @@ public class CalendarService {
         log.info("Calendar soft deleted, id={}", publicId);
     }
 
-    public CalendarResponseDTO markAsCompleted(UUID publicId, User user) {
+    public CalendarResponseDTO updateStatus(UUID publicId, CalendarStatus status, User user) {
         Calendar calendar = findByIdOrThrow(publicId);
 
         if (!calendar.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("You cannot mark this calendar as completed");
         }
 
-        calendar.setStatus(CalendarStatus.COMPLETED);
+        calendar.setStatus(status);
         calendarRepository.save(calendar);
-        log.info("Calendar marked as completed, id={}", publicId);
+        log.info("Calendar status updated, id={}", publicId);
         return CalendarMapper.toResponseDTO(calendar);
     }
 

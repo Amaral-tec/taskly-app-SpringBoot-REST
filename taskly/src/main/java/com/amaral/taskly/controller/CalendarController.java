@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amaral.taskly.dto.request.CalendarRequestDTO;
 import com.amaral.taskly.dto.request.CalendarSearchRequestDTO;
 import com.amaral.taskly.dto.response.CalendarResponseDTO;
+import com.amaral.taskly.enums.CalendarStatus;
 import com.amaral.taskly.model.User;
 import com.amaral.taskly.service.CalendarService;
 
@@ -84,12 +85,13 @@ public class CalendarController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{publicId}/complete")
-    public ResponseEntity<CalendarResponseDTO> completeCalendar(
+    @PostMapping("/{publicId}/{status}")
+    public ResponseEntity<CalendarResponseDTO> updateStatus(
             @PathVariable UUID publicId,
+            @PathVariable CalendarStatus status,
             @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(calendarService.markAsCompleted(publicId, currentUser));
+        return ResponseEntity.ok(calendarService.updateStatus(publicId, status, currentUser));
     }
 
     @PostMapping("/{publicId}/reminder")
