@@ -8,7 +8,8 @@
             "mainClass": "com.amaral.taskly.TasklyApplication",
             "projectName": "taskly",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal"
         }
     ]
 }

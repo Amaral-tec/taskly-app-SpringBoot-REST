@@ -1,7 +1,11 @@
 package com.amaral.taskly.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -58,8 +62,8 @@ public class CalendarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CalendarResponseDTO> searchCalendars(String title, String status, LocalDateTime startDate, 
-                                                     LocalDateTime endDate, User user) {
+    public List<CalendarResponseDTO> searchCalendars(String title, String status, String startDate, 
+                                                     String endDate, User user) {
         CalendarStatus statusEnum = null;
         if (status != null && !status.isBlank()) {
             try {
@@ -77,18 +81,46 @@ public class CalendarService {
         predicates.add(cb.equal(root.get("user"), user));
         predicates.add(cb.isFalse(root.get("deleted")));
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         if (title != null && !title.isBlank()) {
             predicates.add(cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
         }
         if (statusEnum != null) {
             predicates.add(cb.equal(root.get("status"), statusEnum));
         }
-        if (startDate != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("startDateTime"), startDate));
+        
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        try {
+            if (startDate != null && !startDate.isBlank()) {
+                Date start = sdf.parse(startDate);
+                startDateTime = start.toInstant()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toLocalDateTime();
+            }
+            if (endDate != null && !endDate.isBlank()) {
+                Date end = sdf.parse(endDate);
+                endDateTime = end.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime()
+                                .withHour(23).withMinute(59).withSecond(59);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date format", e);
         }
-        if (endDate != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("endDateTime"), endDate));
+
+        if (startDateTime != null && endDateTime != null) {
+            predicates.add(cb.lessThanOrEqualTo(root.get("startDateTime"), endDateTime));
+            predicates.add(cb.greaterThanOrEqualTo(root.get("endDateTime"), startDateTime));
+        } else if (startDateTime != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("endDateTime"), startDateTime));
+        } else if (endDateTime != null) {
+            predicates.add(cb.lessThanOrEqualTo(root.get("startDateTime"), endDateTime));
         }
+
+        cq.where(predicates.toArray(new Predicate[0]));
+        cq.orderBy(cb.asc(root.get("startDateTime")));
 
         cq.where(predicates.toArray(new Predicate[0]));
         cq.orderBy(cb.asc(root.get("startDateTime")));

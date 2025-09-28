@@ -101,8 +101,8 @@ class CalendarServiceTest {
         // given
         String title = "meeting";
         String status = "SCHEDULED";
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        String startDate = LocalDateTime.now().minusDays(1).toString();
+        String endDate = LocalDateTime.now().plusDays(1).toString();
 
         Calendar anotherCalendar = new Calendar();
         anotherCalendar.setId(20L);
@@ -197,7 +197,7 @@ class CalendarServiceTest {
     @Test
     void shouldListCalendarsForUser() {
         // given
-        given(calendarRepository.findByUserAndDeletedFalse(user))
+        given(calendarRepository.findByUserAndDeletedFalseOrderByStartDateTimeAsc(user))
                 .willReturn(List.of(calendar));
 
         // when
@@ -212,7 +212,7 @@ class CalendarServiceTest {
                     assertThat(dto.title()).isEqualTo("Meeting");
                 });
 
-        then(calendarRepository).should().findByUserAndDeletedFalse(user);
+        then(calendarRepository).should().findByUserAndDeletedFalseOrderByStartDateTimeAsc(user);
     }
 
     @Test
