@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
 
-    List<Calendar> findByUserAndDeletedFalse(User user);
+    List<Calendar> findByUserAndDeletedFalseOrderByStartDateTimeAsc(User user);
 
     Optional<Calendar> findByPublicId(UUID publicId);
 }

@@ -53,7 +53,7 @@ public class CalendarService {
     }
 
     public List<CalendarResponseDTO> listCalendars(User user) {
-        return calendarRepository.findByUserAndDeletedFalse(user).stream()
+        return calendarRepository.findByUserAndDeletedFalseOrderByStartDateTimeAsc(user).stream()
                 .map(CalendarMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
