@@ -62,17 +62,8 @@ public class CalendarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CalendarResponseDTO> searchCalendars(String title, String status, String startDate, 
-                                                     String endDate, User user) {
-        CalendarStatus statusEnum = null;
-        if (status != null && !status.isBlank()) {
-            try {
-                statusEnum = CalendarStatus.valueOf(status.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid status: " + status);
-            }
-        }        
-        
+    public List<CalendarResponseDTO> searchCalendars(String title, List<String> status, String startDate, String endDate, User user) {
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Calendar> cq = cb.createQuery(Calendar.class);
         Root<Calendar> root = cq.from(Calendar.class);
@@ -81,17 +72,27 @@ public class CalendarService {
         predicates.add(cb.equal(root.get("user"), user));
         predicates.add(cb.isFalse(root.get("deleted")));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         if (title != null && !title.isBlank()) {
             predicates.add(cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
         }
-        if (statusEnum != null) {
-            predicates.add(cb.equal(root.get("status"), statusEnum));
+
+        if (status != null && !status.isEmpty()) {
+            List<CalendarStatus> statusEnums = status.stream()
+                    .map(s -> {
+                        try {
+                            return CalendarStatus.valueOf(s.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            throw new IllegalArgumentException("Invalid status: " + s);
+                        }
+                    })
+                    .toList();
+            predicates.add(root.get("status").in(statusEnums));
         }
-        
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
+
         try {
             if (startDate != null && !startDate.isBlank()) {
                 Date start = sdf.parse(startDate);
@@ -122,14 +123,11 @@ public class CalendarService {
         cq.where(predicates.toArray(new Predicate[0]));
         cq.orderBy(cb.asc(root.get("startDateTime")));
 
-        cq.where(predicates.toArray(new Predicate[0]));
-        cq.orderBy(cb.asc(root.get("startDateTime")));
-
         List<Calendar> calendars = entityManager.createQuery(cq).getResultList();
 
         return calendars.stream()
-                .map(CalendarMapper::toResponseDTO)
-                .collect(Collectors.toList());
+                        .map(CalendarMapper::toResponseDTO)
+                        .collect(Collectors.toList());
     }
 
     public CalendarResponseDTO updateCalendar(UUID publicId, CalendarRequestDTO dto, User user) {

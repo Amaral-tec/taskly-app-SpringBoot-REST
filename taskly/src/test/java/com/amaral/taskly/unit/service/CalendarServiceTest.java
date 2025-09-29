@@ -127,8 +127,9 @@ class CalendarServiceTest {
         when(query.getResultList()).thenReturn(List.of(anotherCalendar));
 
         // when
+        List<String> statuses = List.of("SCHEDULED");
         List<CalendarResponseDTO> result = calendarService.searchCalendars(
-                title, status, startDate, endDate, user
+                title, statuses, startDate, endDate, user
         );
 
         // then

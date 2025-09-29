@@ -40,12 +40,15 @@ taskly/
 │ │ │ │		├─ JwtAuthenticationFilter ----> extends OncePerRequestFilter
 │ │ │ │		├─ JwtUtils
 │ │ │ │		└─ SecurityConfig
-│ │ │ └── service
-│ │ │ 		├─ AccessService
-│ │ │ 		├─ CalendarService
-│ │ │ 		├─ CustomUserDetailsService ---> implements UserDetailsService
-│ │ │ 		├─ EmailService
-│ │ │ 		└─ UserService
+│ │ │ ├── service
+│ │ │ │		├─ AccessService
+│ │ │ │		├─ CalendarService
+│ │ │ │		├─ CustomUserDetailsService ---> implements UserDetailsService
+│ │ │ │		├─ EmailService
+│ │ │ │		└─ UserService
+│ │ │ └── validation
+│ │ │ 		├─ DateRange
+│ │ │ 		└─ DateRangeValidator
 │ │ ├── resources/
 │ │ ├── application.yml # environment configs
 │ │ └── db/migration/ # Flyway scripts
